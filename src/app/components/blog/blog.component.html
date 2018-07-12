@@ -1,0 +1,172 @@
+<h1 class="page-header">BLOG FEED</h1>
+
+<div class="row show-hide-message" *ngIf="message && newPost">
+    <div [ngClass]="messageClass">
+      {{message}}
+    </div>
+
+  </div>
+<button type="button" name="button" class="btn btn-warning" *ngIf="!newPost" (click)="newBlogForm()">New Post</button>
+
+<button [disabled]="loadingBlogs" type="button" name="button" class="btn btn-default" *ngIf="!newPost" (click)="reloadBlogs()">
+  <span class="glyphicon glyphicon-repeat">
+  </span>&nbsp;&nbsp;Reload</button>
+
+<br>
+<br>
+<br>
+
+
+<!-- New Blog Post -->
+<form [formGroup]="form" name="blogForm" (submit)="onBlogSubmit()" *ngIf="newPost">
+  <!-- title -->
+  <div class="form-group">
+    <label for="title">Title</label>
+
+    <div [ngClass]="{'has-success': form.controls.title.valid,
+            'has-error' : form.controls.title.dirty && form.controls.title.errors}">
+
+      <input type="text" name="title" class="form-control" placeholder="Blog post title" autocomplete="off" formControlName="title">
+
+      <ul class="help-block">
+
+        <li *ngIf="form.controls.title.dirty && form.controls.title.errors?.required">
+          This field is required</li>
+
+        <li *ngIf="(form.controls.title.dirty && form.controls.title.errors?.minLength)||(form.controls.title.dirty && form.controls.title.errors?.maxLength)">
+          Max length should be 50 and min length should be 5</li>
+        <li *ngIf="form.controls.title.dirty && form.controls.title.errors?.alphanumericValidation">
+          Must be letter or number</li>
+      </ul>
+
+    </div>
+    </div>
+    <!-- title ends -->
+
+    <!-- Body Starts -->
+
+    <div class="form-group">
+      <label for="body">Description</label>
+
+      <div [ngClass]="{'has-success': form.controls.body.valid,
+                      'has-error' : form.controls.body.dirty && form.controls.body.errors}">
+
+        <textarea name="body" rows="8" cols="30" placeholder="Description" class="form-control" formControlName="body"> </textarea>
+
+        <ul class="help-block">
+
+          <li *ngIf="form.controls.body.dirty && form.controls.body.errors?.required">
+            This field is required</li>
+
+          <li *ngIf="(form.controls.body.dirty && form.controls.body.errors?.minLength)||(form.controls.body.dirty && form.controls.body.errors?.maxLength)">
+            Max length nd min length should be 5</li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+    <button [disabled]="processing"
+            type="button" 
+            name="button"
+            (click)="goBack()"
+            class="btn btn-warning">Go Back</button>
+
+    <button [disabled]="processing"
+            type="submit" 
+            name="button"
+            class="btn btn-success">Submit</button>
+    <!-- Body ends -->
+</form>
+
+<!-- Blog Post Ends -->
+
+<div *ngIf="!newPost">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Post Title</h3>
+    </div>
+    <div class="panel-body">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porttitor a dui vulputate auctor. Fusce auctor libero non malesuada
+      ultrices. Nunc ipsum velit, viverra condimentum maximus vel, volutpat sit amet orci. Quisque vulputate est nec massa
+      pulvinar sagittis. Curabitur malesuada at purus ac rutrum. Nam vel sem nunc. Curabitur sapien felis, fringilla ut lorem
+      eget, viverra pulvinar lacus. Aliquam elit magna, semper nec urna ac, dictum blandit dui. Pellentesque lacus mauris,
+      laoreet at varius et, porta sed odio. Nulla fringilla sapien vel justo ultrices, vitae lobortis dolor tristique. Morbi
+      quis velit eget dolor laoreet facilisis vitae a est. Donec pulvinar nec orci non lacinia. Morbi non magna at sem placerat
+      malesuada nec sit amet lacus. Duis cursus justo metus, et sollicitudin dui sodales id. Morbi accumsan eros nibh, sit
+      amet ornare erat accumsan ut. In hendrerit lobortis sem, ut viverra orci ornare suscipit.
+    </div>
+
+    <!-- Footer Starts -->
+    <div class="panel-footer">
+      <strong>Posted By: </strong>Drishti Arora
+      <br>
+      <strong>Date:</strong>Aug 25 2018
+      <br>
+      <div>
+        <strong>Likes: </strong>25
+        <br>
+        <strong>Dislikes</strong>22
+      </div>
+
+      <a href="#">
+        <button type="button" name="button" class="btn btn-sm btn-info">Edit</button>
+      </a>
+      <a href="#">
+        <button type="button" name="button" class="btn btn-sm btn-danger">Delete</button>
+      </a>
+
+      <!-- Likes Dropdown -->
+      <div class="dropdown">
+        <a href="#">
+          <button type="button" name="button" class="btn btn-sm btn-success">
+            <span class="glyphicon glyphicon-thumbs-up">&nbsp;&nbsp;</span>Likes:21
+          </button>
+        </a>
+        <div class="dropdown-content">
+          <a href="#">Drishti</a>
+          <a href="#">Abhishek</a>
+          <a href="#">Ritu</a>
+        </div>
+      </div>
+      <!-- Likes Dropdown ends -->
+
+
+      <!-- Dislikes Dropdown -->
+      <div class="dropdown">
+        <a href="#">
+          <button type="button" name="button" class="btn btn-sm btn-warning">
+            <span class="glyphicon glyphicon-thumbs-up">&nbsp;&nbsp;</span>Dislikes:10
+          </button>
+        </a>
+        <div class="dropdown-content">
+          <a href="#">Danish</a>
+          <a href="#">Dinesh</a>
+        </div>
+      </div>
+    </div>
+    <!-- Dislikes Dropdown Ends -->
+
+  </div>
+
+  <!-- Footer ends -->
+
+  <ul class="list-group">
+    <li class="list-group-item">
+      <button type="button" name="button" class="btn btn-sm btn-danger" (click)="draftComment()">Post Comment</button>
+      <br>
+
+      <!-- <form class="">
+
+        <!-- <textarea name="comment" rows="10", cols="30" class="form-control"></textarea>
+        <button type="button" name="button" class="btn btn-sn btn-info"> Submit Post</button>
+        <button type="button" name="button" class="btn btn-sn btn-danger"> Cancel </button> -->
+      
+      <!-- </form> -->
+    </li>
+  </ul>
+
+
+
+</div>
