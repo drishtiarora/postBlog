@@ -78,6 +78,4 @@ getProfile() {
 loggedIn() {
   return tokenNotExpired();
 }
-
-
 }

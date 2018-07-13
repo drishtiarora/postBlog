@@ -57,7 +57,7 @@ module.exports = (router) => {
                         //             })
                         //         }
                         //     }
-                        
+
                         // else {
                         //     res.send({
                         //         success: true,
@@ -67,8 +67,8 @@ module.exports = (router) => {
                         // }
                         res.send({
                             success: true,
-                                msg: "Post created",
-                                postInfo: result
+                            msg: "Post created",
+                            postInfo: result
                         })
                     });
 
@@ -76,6 +76,165 @@ module.exports = (router) => {
             }
         }
     })
+
+    router.get('/allBlogs', (req, res) => {
+        Blog.find({}, (err, result) => {
+            console.log(result);
+
+            if (err) {
+                res.send({
+                    success: false,
+                    msg: err
+                })
+            }
+            else {
+                if (!result) {
+                    res.send({
+                        success: false,
+                        msg: "No blogs found"
+                    })
+                }
+                else {
+                    res.send({
+                        success: true,
+                        msg: result
+                    })
+                }
+            }
+
+        }).sort({ '_id': -1 });  // to put newest blogs on top
+    })
+
+    router.get('/singleBlog/:id', (req, res) => {
+
+        console.log("req.params for edit", req.params);
+
+        Blog.findOne({ _id: req.params.id }, (err, blog) => {
+            console.log("result is", blog)
+            if (err) {
+                res.send({
+                    success: false,
+                    msg: "Not valid blog id"
+                })
+            }
+            else {
+                if (!blog) {
+                    res.send({
+
+                        super: false,
+                        msg: "Blog Not Found"
+                    })
+                }
+                else {
+                    User.findOne({ _id: req.decoded.userId }, (err, user) => {
+                        if (err) {
+                            res.send({
+                                success: false,
+                                msg: err
+                            })
+                        }
+                        else {
+                            if (!user) {
+                                res.send({
+                                    success: false,
+                                    msg: 'Unable to authenticate user'
+                                })
+                            }
+                            else {
+                                if (user.username !== blog.createdBy) {
+                                    res.send({
+                                        success: false,
+                                        msg: 'You are not able to authorize to edit this blog'
+                                    })
+                                }
+                                else {
+                                    res.send({
+                                        success: true,
+                                        msg: blog
+                                    })
+                                }
+                            }
+                        }
+                    })
+                }
+            }
+        });
+    })
+
+    router.put('/updateBlog', (req, res) => {
+        console.log("id blog" , req.body)
+        if (!req.body._id) {
+            res.send({
+                success: false,
+                msg: 'No blog id provided   '
+            })
+        }
+        else {
+            Blog.findOne({ _id: req.body._id }, (err, blog) => {
+                if (err) {
+                    res.send({
+                        success: false,
+                        msg: 'not valid blog id'
+                    })
+                }
+                else {
+                    if (!blog) {
+                        res.send({
+                            success: false,
+                            msg: 'blog id not found'
+                        })
+                    }
+                    else {
+
+                        User.findOne({ _id: req.decoded.userId }, (err, user) => {
+                            if (err) {
+                                res.send({
+                                    success: false,
+                                    msg: err
+                                })
+                            }
+                            else {
+                                if (err) {
+                                    res.send({
+                                        success: false,
+                                        msg: "Unable to authenticate user"
+                                    })
+                                }
+                                else {
+                                    if (user.username !== blog.createdBy) {
+                                        res.send({
+                                            success: false,
+                                            msg: 'You are not authorized to edit this post'
+                                        })
+                                    }
+                                    else {
+                                        blog.title = req.body.title;
+                                        blog.body = req.body.body
+                                        blog.save((err) => {
+                                            if (err) {
+                                                res.send({
+                                                    success: false,
+                                                    msg: err
+                                                })
+                                            }
+                                            else {
+                                                res.send({
+                                                    success: true,
+                                                    msg: "Blog Updated"
+                                                })
+                                            }
+                                        })
+                                    }
+                                }
+                            }
+                        })
+                    }
+
+                }
+            })
+        }
+    });
+
 
     return router;
 };

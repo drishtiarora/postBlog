@@ -30,4 +30,22 @@ export class BlogService {
     return this._http.post('http://localhost:3000/blogs/newBlog',blog, this.options)
     .pipe(map(data => data.json())) 
   }
+
+  getAlllBlogs(){
+    this.createAuthenticationHeaders();
+    return this._http.get('http://localhost:3000/blogs/allblogs', this.options)
+    .pipe(map(data => data.json())) 
+  }
+
+  getSingleBlog(id){
+    this.createAuthenticationHeaders();
+    return this._http.get('http://localhost:3000/blogs/singleBlog/'+ id , this.options)
+    .pipe(map(data=>data.json()))
+  }
+
+  getEditBlog(blog){
+    this.createAuthenticationHeaders();
+    return this._http.put('http://localhost:3000/blogs/updateBlog', blog, this.options)
+    .pipe(map(data=>data.json()))
+  }
 }
