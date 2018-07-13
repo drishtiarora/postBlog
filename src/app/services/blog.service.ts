@@ -68,4 +68,13 @@ export class BlogService {
     .pipe(map(data=>data.json()))
   }
 
+  postComment(id , comment){
+    this.createAuthenticationHeaders();
+    const blogData ={
+      id: id,
+      comment : comment
+    }
+    return this._http.post('http://localhost:3000/blogs/comment', blogData, this.options)
+    .pipe(map(data=> data.json()))
+  }
 }
