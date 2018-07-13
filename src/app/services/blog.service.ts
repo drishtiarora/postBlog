@@ -48,4 +48,24 @@ export class BlogService {
     return this._http.put('http://localhost:3000/blogs/updateBlog', blog, this.options)
     .pipe(map(data=>data.json()))
   }
+
+  deleteBlog(id){
+    this.createAuthenticationHeaders();
+    return this._http.delete('http://localhost:3000/blogs/deleteBlog/' +id , this.options)
+    .pipe(map(data=>data.json()))
+  }
+
+
+  likeBlog(id){
+    const blogData = {id: id}
+    return this._http.put('http://localhost:3000/blogs/likeBlog',blogData, this.options)
+    .pipe(map(data=>data.json()))
+  }
+
+  dislikeBlog(id){
+    const blogData = {id: id}
+    return this._http.put('http://localhost:3000/blogs/dislikeBlog',blogData, this.options)
+    .pipe(map(data=>data.json()))
+  }
+
 }

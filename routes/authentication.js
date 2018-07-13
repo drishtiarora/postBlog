@@ -192,7 +192,40 @@ module.exports = (router) => {
     });
   });
 
- 
+router.get('/publicProfile/:username' , (req,res)=>{
+    console.log(req.params);
+    if(!req.params.username){
+        res.send({
+            success: false,
+            msg: 'No user found'
+        })
+    }
+    else{
+        User.findOne({username: req.params.username}).select('username email')((err,user)=>{
+            if(err){
+                res.send({
+                    success: false,
+                    msg: 'Something went wronf'
+                })
+            }
+            else{
+                if(!user){
+                    res.send({
+                        success:false,
+                        msg: 'User not found'
+                    })
+                }
+                else{
+                    res.send({
+                        success: true,
+                        user: user
+                    })
+
+                }
+            }
+        })
+    }
+})
 
     return router;
 }   

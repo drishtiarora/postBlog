@@ -74,6 +74,12 @@ getProfile() {
   .pipe(map(res => res.json()));
 }
 
+getPublicProfile(username){
+  this.createAuthenticationHeaders();
+  return this._http.get('http://localhost:3000/authentication/publicProfile/'+ username , this.options)
+  .pipe(map((data)=>data.json()))
+}
+
 // Function to check if user is logged in
 loggedIn() {
   return tokenNotExpired();

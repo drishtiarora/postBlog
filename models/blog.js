@@ -84,9 +84,9 @@ const blogSchema = new Schema({
     createdAt:{type:Date, default: Date.now()},
     likes:{type: Number, default: 0},
     likedBy: {type:Array},
-    dislikes: {type: String},
+    dislikes: {type: String, default : 0},
     dislikedBy: {type: Array},
-    comments : [
+    comments : [ 
         {
             comment: { type: String, validate: commentValidator},
             commentator: {type: String}

@@ -126,4 +126,16 @@ export class BlogComponent implements OnInit {
     
   }
 
+  likeBlog(id){
+    this._blogService.likeBlog(id).subscribe((data)=>{
+      this.getAllBlogs();
+    })
+  }
+
+  dislikeBlog(id){
+    this._blogService.dislikeBlog(id).subscribe((data)=>{
+      this.getAllBlogs();
+    })
+  }
+
 }
