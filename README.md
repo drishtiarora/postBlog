@@ -1,6 +1,11 @@
+
 # PostBlog
+Registeration and login page after authentication using JWT the user will be redirected to the post page where the user can view all the posts, he can  edit and delete the posts made by him and could like and dislike the posts posted by other users. Also option of creating a new post was there.
+
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
+
+
 
 ## Development server
 
